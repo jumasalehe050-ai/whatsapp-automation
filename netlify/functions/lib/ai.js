@@ -1,4 +1,3 @@
-cat > netlify/functions/lib/ai.js << 'EOF'
 const Anthropic = require("@anthropic-ai/sdk");
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -96,4 +95,3 @@ async function getAIReply({ business, history, customerMessage }) {
 }
 
 module.exports = { getAIReply, containsEscalationKeyword };
-EOF

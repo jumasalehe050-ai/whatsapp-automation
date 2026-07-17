@@ -1,4 +1,3 @@
-cat > netlify/functions/lib/store.js << 'EOF'
 const { getStore } = require("@netlify/blobs");
 
 function store() {
@@ -41,4 +40,3 @@ module.exports = {
   getHistory,
   saveHistory,
 };
-EOF
