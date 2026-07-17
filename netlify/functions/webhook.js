@@ -1,4 +1,3 @@
-cat > netlify/functions/webhook.js << 'EOF'
 const {
   getBusinessByPhoneNumberId,
   getHistory,
@@ -75,4 +74,3 @@ exports.handler = async (event) => {
     return { statusCode: 200, body: "ok" };
   }
 };
-EOF

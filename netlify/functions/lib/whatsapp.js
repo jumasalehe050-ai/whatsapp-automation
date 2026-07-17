@@ -1,4 +1,3 @@
-cat > netlify/functions/lib/whatsapp.js << 'EOF'
 async function sendWhatsAppMessage({ phoneNumberId, accessToken, to, text }) {
   const url = `https://graph.facebook.com/v20.0/${phoneNumberId}/messages`;
 
@@ -25,4 +24,3 @@ async function sendWhatsAppMessage({ phoneNumberId, accessToken, to, text }) {
 }
 
 module.exports = { sendWhatsAppMessage };
-EOF

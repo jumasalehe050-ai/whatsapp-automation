@@ -1,4 +1,3 @@
-cat > netlify/functions/admin-business.js << 'EOF'
 const { saveBusiness, getBusiness } = require("./lib/store");
 
 exports.handler = async (event) => {
@@ -51,4 +50,3 @@ exports.handler = async (event) => {
 
   return { statusCode: 405, body: "Method not allowed" };
 };
-EOF
