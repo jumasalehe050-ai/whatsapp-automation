@@ -1,11 +1,13 @@
 const { getStore } = require("@netlify/blobs");
 
-// IMPORTANT: Netlify automatically provides these values.
-// We just need to use the default store created for the site.
+// Use your Team ID
+const TEAM_ID = "69911ae1cfc7fd2e5c823626";
+
 function store() {
-  // This is the correct way to get the default store.
-  // It will automatically use the site's configured blob storage.
-  return getStore("businesses");
+  // Configure the store with your team ID
+  return getStore("businesses", {
+    teamID: TEAM_ID
+  });
 }
 
 async function saveBusiness(businessId, config) {
