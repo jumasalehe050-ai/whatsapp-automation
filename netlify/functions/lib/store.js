@@ -1,6 +1,7 @@
 const { getStore } = require("@netlify/blobs");
 
 function store() {
+  // Use the default configuration - Netlify will auto-configure
   return getStore("businesses");
 }
 
