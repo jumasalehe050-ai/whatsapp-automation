@@ -1,7 +1,10 @@
 const { getStore } = require("@netlify/blobs");
 
+// IMPORTANT: Netlify automatically provides these values.
+// We just need to use the default store created for the site.
 function store() {
-  // Use the default configuration - Netlify will auto-configure
+  // This is the correct way to get the default store.
+  // It will automatically use the site's configured blob storage.
   return getStore("businesses");
 }
 
