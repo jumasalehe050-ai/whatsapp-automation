@@ -1,0 +1,18 @@
+{
+  "name": "whatsapp-business-automation",
+  "version": "1.0.0",
+  "description": "Multi-tenant WhatsApp auto-reply automation",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
+    "@netlify/blobs": "^8.1.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.38.0"
+  },
+  "allowScripts": {
+    "netlify-cli@17.38.1": true,
+    "esbuild@0.19.11": true,
+    "esbuild@0.21.2": true,
+    "sharp@0.32.6": true
+  }
+}
