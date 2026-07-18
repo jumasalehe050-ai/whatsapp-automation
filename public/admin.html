@@ -1,214 +1,338 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Africa-WA Admin</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Africa-WA Admin Dashboard</title>
     <style>
-        * { box-sizing: border-box; }
-        body { 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            max-width: 800px; 
-            margin: 30px auto; 
+            background: #0A0A0F;
+            color: #F5F5F7;
             padding: 20px;
-            background: #f5f5f5;
+            min-height: 100vh;
         }
-        h1 { color: #075e54; border-bottom: 2px solid #25D366; padding-bottom: 10px; }
-        h2 { color: #075e54; margin-top: 30px; font-size: 1.2rem; }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 4px;
+            color: #F5F5F7;
+        }
+        .subtitle {
+            color: #A0A0B0;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
         .card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin: 15px 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 24px;
+            border-radius: 16px;
+            margin: 16px 0;
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
-        input, textarea, select {
-            display: block;
+        .card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+            color: #F5F5F7;
+        }
+        .card h3 {
+            font-size: 1rem;
+            margin: 16px 0 8px 0;
+            color: #D0D0E0;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        input,
+        select,
+        textarea {
             width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
+            padding: 12px 14px;
+            margin: 6px 0;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: #F5F5F7;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #6C63FF;
+        }
+        input::placeholder,
+        textarea::placeholder {
+            color: #606070;
         }
         button {
-            padding: 12px 24px;
-            margin: 8px 4px 8px 0;
+            padding: 12px 28px;
             border: none;
-            border-radius: 6px;
-            cursor: pointer;
+            border-radius: 10px;
+            font-size: 0.95rem;
             font-weight: 600;
-            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 6px 4px 6px 0;
         }
-        .btn-primary { background: #25D366; color: white; }
-        .btn-primary:hover { background: #1da851; }
-        .btn-danger { background: #e74c3c; color: white; }
-        .btn-danger:hover { background: #c0392b; }
-        .btn-info { background: #3498db; color: white; }
-        .btn-info:hover { background: #2980b9; }
-        .result {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 6px;
-            white-space: pre-wrap;
+        button:hover {
+            transform: scale(1.02);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-primary {
+            background: #6C63FF;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5A52E0;
+        }
+        .btn-success {
+            background: #25D366;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #1DA851;
+        }
+        .btn-danger {
+            background: #FF6B6B;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #E05555;
+        }
+        .btn-info {
+            background: #4A9EFF;
+            color: white;
+        }
+        .btn-info:hover {
+            background: #3A8AEA;
+        }
+        .btn-warning {
+            background: #FFB800;
+            color: #1A1A2E;
+        }
+        .btn-warning:hover {
+            background: #E5A600;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 0.9rem;
+        }
+        th {
+            text-align: left;
+            padding: 12px 8px;
+            color: #A0A0B0;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .status-taken {
+            color: #25D366;
+        }
+        .status-missed {
+            color: #FF6B6B;
+        }
+        .status-pending {
+            color: #FFB800;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-success {
+            background: rgba(37, 211, 102, 0.2);
+            color: #25D366;
+        }
+        .badge-danger {
+            background: rgba(255, 107, 107, 0.2);
+            color: #FF6B6B;
+        }
+        .badge-warning {
+            background: rgba(255, 184, 0, 0.2);
+            color: #FFB800;
+        }
+        .badge-info {
+            background: rgba(74, 158, 255, 0.2);
+            color: #4A9EFF;
+        }
+        .result-box {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 16px;
+            border-radius: 10px;
+            margin: 12px 0;
+            color: #D0D0E0;
             font-family: 'Courier New', monospace;
-            font-size: 13px;
-            max-height: 400px;
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
             overflow: auto;
         }
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+        .empty-state {
+            color: #606070;
+            text-align: center;
+            padding: 30px 0;
         }
-        .badge-active { background: #25D366; color: white; }
-        .badge-paused { background: #f39c12; color: white; }
-        .badge-suspended { background: #e74c3c; color: white; }
-        .help-text {
-            font-size: 12px;
-            color: #888;
-            margin-top: 4px;
-        }
-        .row { display: flex; gap: 10px; flex-wrap: wrap; }
-        .row input { flex: 1; min-width: 150px; }
-        @media (max-width: 600px) {
-            body { padding: 10px; }
-            .row { flex-direction: column; }
+        @media (max-width: 700px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 0 4px;
+            }
+            .card {
+                padding: 16px;
+            }
+            table {
+                font-size: 0.75rem;
+            }
+            th,
+            td {
+                padding: 6px 4px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>🌍 Africa-WA Admin Dashboard</h1>
-    
-    <!-- ============================================================ -->
-    <!-- ADD BUSINESS -->
-    <!-- ============================================================ -->
-    <div class="card">
-        <h2>➕ Add / Update Business</h2>
-        <div class="row">
-            <input type="text" id="businessId" placeholder="Business ID (e.g., dress-shop)">
-            <input type="text" id="businessName" placeholder="Business Name">
+
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- HEADER -->
+        <!-- ============================================================ -->
+        <h1>🌍 Africa-WA Admin Dashboard</h1>
+        <p class="subtitle">Manage businesses, patients, and WhatsApp automation</p>
+
+        <!-- ============================================================ -->
+        <!-- SECTION 1: ADD / UPDATE BUSINESS (Existing) -->
+        <!-- ============================================================ -->
+        <div class="card">
+            <h2>🏢 Add / Update Business</h2>
+            <div class="grid-2">
+                <input type="text" id="businessId" placeholder="Business ID (e.g., kali-pharm)">
+                <input type="text" id="businessName" placeholder="Business Name">
+                <input type="text" id="phoneNumberId" placeholder="Phone Number ID">
+                <input type="text" id="accessToken" placeholder="Access Token">
+            </div>
+            <input type="text" id="aboutBusiness" placeholder="About Business (optional)" style="grid-column: 1 / -1;">
+            <button class="btn-success" onclick="addBusiness()">➕ Add / Update Business</button>
+            <div id="businessResult" class="result-box" style="margin-top:12px; display:none;"></div>
         </div>
-        <div class="row">
-            <input type="text" id="phoneNumberId" placeholder="Phone Number ID">
-            <input type="text" id="accessToken" placeholder="Access Token">
+
+        <!-- ============================================================ -->
+        <!-- SECTION 2: VIEW BUSINESS (Existing) -->
+        <!-- ============================================================ -->
+        <div class="card">
+            <h2>🔍 View Business</h2>
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                <input type="text" id="viewBusinessId" placeholder="Business ID" style="flex:1; min-width:200px;">
+                <button class="btn-info" onclick="viewBusiness()">View</button>
+            </div>
+            <div id="viewBusinessResult" class="result-box" style="margin-top:12px; display:none;"></div>
         </div>
-        <div class="row">
-            <input type="text" id="businessType" placeholder="Type: dresses, pharmacy, restaurant">
-            <input type="text" id="statusTime" placeholder="Status Time (e.g., 08:00)" value="08:00">
+
+        <!-- ============================================================ -->
+        <!-- SECTION 3: PATIENT FOLLOW-UP SYSTEM (NEW) -->
+        <!-- ============================================================ -->
+        <div class="card" style="border: 1px solid rgba(37, 211, 102, 0.3);">
+            <h2 style="color: #25D366;">💊 Patient Follow-Up System</h2>
+            <p style="color: #A0A0B0; margin-bottom: 16px; font-size: 0.95rem;">
+                Add patients and they'll receive follow-up messages every 3 days.
+                Patients choose their language (English or Kiswahili) on first message.
+            </p>
+
+            <!-- Add Patient Form -->
+            <h3>➕ Add Patient</h3>
+            <div class="grid-2">
+                <input type="text" id="patientId" placeholder="Patient ID (e.g., P001)">
+                <input type="text" id="patientName" placeholder="Full Name">
+                <input type="text" id="patientPhone" placeholder="Phone (+255772353008)">
+                <input type="text" id="patientMedication" placeholder="Medication Name">
+                <input type="text" id="pharmacyName" placeholder="Pharmacy Name (optional)">
+            </div>
+            <button class="btn-success" onclick="addPatient()">➕ Add Patient</button>
+            <div id="patientAddResult" class="result-box" style="margin-top:12px; display:none;"></div>
+
+            <hr>
+
+            <!-- Patient List -->
+            <h3>📋 All Patients</h3>
+            <button class="btn-info" onclick="loadPatients()">🔄 Refresh List</button>
+            <div id="patientList" style="margin-top:12px;">
+                <div class="empty-state">Loading patients...</div>
+            </div>
+
+            <hr>
+
+            <!-- Send Follow-ups -->
+            <h3>📤 Send Follow-ups Now</h3>
+            <p style="color:#A0A0B0; font-size:0.9rem; margin-bottom:8px;">
+                Sends messages to patients who haven't been contacted in 3+ days.
+            </p>
+            <button class="btn-warning" onclick="sendFollowups()">📨 Send to All Due Patients</button>
+            <div id="sendResult" class="result-box" style="margin-top:12px; display:none;"></div>
         </div>
-        <div style="margin: 10px 0;">
-            <label>
-                <input type="checkbox" id="statusEnabled" checked>
-                Enable Daily Status Updates
-            </label>
-        </div>
-        <button class="btn-primary" onclick="addBusiness()">➕ Add / Update Business</button>
+
     </div>
 
     <!-- ============================================================ -->
-    <!-- VIEW BUSINESS -->
+    <!-- JAVASCRIPT -->
     <!-- ============================================================ -->
-    <div class="card">
-        <h2>🔍 View Business</h2>
-        <div class="row">
-            <input type="text" id="viewBusinessId" placeholder="Business ID">
-            <button class="btn-info" onclick="viewBusiness()">View</button>
-        </div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- UPDATE BUSINESS -->
-    <!-- ============================================================ -->
-    <div class="card">
-        <h2>✏️ Update Business</h2>
-        <div class="row">
-            <input type="text" id="updateBusinessId" placeholder="Business ID">
-            <input type="text" id="updateField" placeholder="Field to update (e.g., businessName)">
-        </div>
-        <input type="text" id="updateValue" placeholder="New value">
-        <button class="btn-info" onclick="updateBusiness()">✏️ Update</button>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- DELETE BUSINESS -->
-    <!-- ============================================================ -->
-    <div class="card" style="border: 2px solid #e74c3c;">
-        <h2 style="color: #e74c3c;">🗑️ Delete Business</h2>
-        <div class="row">
-            <input type="text" id="deleteBusinessId" placeholder="Business ID">
-            <button class="btn-danger" onclick="deleteBusiness()">🗑️ Delete</button>
-        </div>
-        <div class="help-text">⚠️ This action cannot be undone!</div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- TRIGGER STATUS UPDATE -->
-    <!-- ============================================================ -->
-    <div class="card">
-        <h2>📱 Send Daily Status Now</h2>
-        <div class="row">
-            <input type="text" id="statusBusinessId" placeholder="Business ID">
-            <button class="btn-primary" onclick="sendStatus()">📤 Send Status Now</button>
-        </div>
-        <div class="help-text">This will send today's WhatsApp Status update immediately</div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- RESULT OUTPUT -->
-    <!-- ============================================================ -->
-    <div class="card">
-        <h2>📋 Result</h2>
-        <div id="result" class="result">Ready. Use the buttons above to manage your clients.</div>
-    </div>
-
     <script>
         // ============================================================
         // CONFIGURATION
         // ============================================================
         const ADMIN_KEY = 'MySecretKey2024!';
-        const BASE_URL = 'https://africa-wa.netlify.app/.netlify/functions/admin-business';
-        const STATUS_URL = 'https://africa-wa.netlify.app/.netlify/functions/daily-status';
+        const BASE_URL = '/.netlify/functions';
 
         // ============================================================
-        // HELPER FUNCTIONS
+        // SECTION 1: BUSINESS FUNCTIONS (Existing)
         // ============================================================
-        function showResult(data) {
-            document.getElementById('result').textContent = JSON.stringify(data, null, 2);
-        }
 
-        function showError(error) {
-            document.getElementById('result').textContent = '❌ Error: ' + error.message;
-        }
-
-        // ============================================================
-        // 1. ADD / UPDATE BUSINESS
-        // ============================================================
         async function addBusiness() {
             const data = {
                 businessId: document.getElementById('businessId').value.trim(),
                 businessName: document.getElementById('businessName').value.trim(),
                 phoneNumberId: document.getElementById('phoneNumberId').value.trim(),
                 accessToken: document.getElementById('accessToken').value.trim(),
-                businessType: document.getElementById('businessType').value.trim() || 'general',
-                statusSchedule: {
-                    enabled: document.getElementById('statusEnabled').checked,
-                    time: document.getElementById('statusTime').value.trim() || '08:00',
-                    template: 'daily_promo'
-                }
+                aboutBusiness: document.getElementById('aboutBusiness').value.trim()
             };
 
             if (!data.businessId || !data.phoneNumberId || !data.accessToken) {
-                showResult({ error: 'Business ID, Phone Number ID, and Access Token are required' });
+                showResult('businessResult', '❌ Business ID, Phone Number ID, and Access Token are required', 'error');
                 return;
             }
 
             try {
-                const response = await fetch(BASE_URL, {
+                const response = await fetch(`${BASE_URL}/admin-business`, {
                     method: 'POST',
                     headers: {
                         'x-admin-key': ADMIN_KEY,
@@ -217,56 +341,51 @@
                     body: JSON.stringify(data)
                 });
                 const result = await response.json();
-                showResult(result);
+                showResult('businessResult', JSON.stringify(result, null, 2), 'success');
             } catch (error) {
-                showError(error);
+                showResult('businessResult', '❌ Error: ' + error.message, 'error');
             }
         }
 
-        // ============================================================
-        // 2. VIEW BUSINESS
-        // ============================================================
         async function viewBusiness() {
             const id = document.getElementById('viewBusinessId').value.trim();
             if (!id) {
-                showResult({ error: 'Please enter a Business ID' });
+                showResult('viewBusinessResult', '❌ Please enter a Business ID', 'error');
                 return;
             }
 
             try {
-                const response = await fetch(`${BASE_URL}?businessId=${id}`, {
+                const response = await fetch(`${BASE_URL}/admin-business?businessId=${id}`, {
                     headers: { 'x-admin-key': ADMIN_KEY }
                 });
                 const result = await response.json();
-                showResult(result);
+                showResult('viewBusinessResult', JSON.stringify(result, null, 2), 'success');
             } catch (error) {
-                showError(error);
+                showResult('viewBusinessResult', '❌ Error: ' + error.message, 'error');
             }
         }
 
         // ============================================================
-        // 3. UPDATE BUSINESS
+        // SECTION 2: PATIENT FUNCTIONS (NEW)
         // ============================================================
-        async function updateBusiness() {
-            const id = document.getElementById('updateBusinessId').value.trim();
-            const field = document.getElementById('updateField').value.trim();
-            const value = document.getElementById('updateValue').value.trim();
 
-            if (!id || !field) {
-                showResult({ error: 'Business ID and Field are required' });
+        async function addPatient() {
+            const data = {
+                patientId: document.getElementById('patientId').value.trim(),
+                name: document.getElementById('patientName').value.trim(),
+                phone: document.getElementById('patientPhone').value.trim(),
+                medication: document.getElementById('patientMedication').value.trim(),
+                pharmacyName: document.getElementById('pharmacyName').value.trim() || 'Pharmacy'
+            };
+
+            if (!data.patientId || !data.name || !data.phone || !data.medication) {
+                showResult('patientAddResult', '❌ Please fill all required fields: Patient ID, Name, Phone, Medication', 'error');
                 return;
             }
 
-            const data = {
-                businessId: id,
-                updates: {
-                    [field]: value
-                }
-            };
-
             try {
-                const response = await fetch(BASE_URL, {
-                    method: 'PUT',
+                const response = await fetch(`${BASE_URL}/manage-patient`, {
+                    method: 'POST',
                     headers: {
                         'x-admin-key': ADMIN_KEY,
                         'Content-Type': 'application/json'
@@ -274,74 +393,130 @@
                     body: JSON.stringify(data)
                 });
                 const result = await response.json();
-                showResult(result);
+                showResult('patientAddResult', JSON.stringify(result, null, 2), 'success');
+                if (result.success) {
+                    document.getElementById('patientId').value = '';
+                    document.getElementById('patientName').value = '';
+                    document.getElementById('patientPhone').value = '';
+                    document.getElementById('patientMedication').value = '';
+                    document.getElementById('pharmacyName').value = '';
+                    loadPatients();
+                }
             } catch (error) {
-                showError(error);
+                showResult('patientAddResult', '❌ Error: ' + error.message, 'error');
             }
         }
 
-        // ============================================================
-        // 4. DELETE BUSINESS
-        // ============================================================
-        async function deleteBusiness() {
-            const id = document.getElementById('deleteBusinessId').value.trim();
-            if (!id) {
-                showResult({ error: 'Please enter a Business ID' });
-                return;
-            }
-
-            if (!confirm(`⚠️ Are you sure you want to delete "${id}"? This cannot be undone!`)) {
-                return;
-            }
+        async function loadPatients() {
+            const container = document.getElementById('patientList');
+            container.innerHTML = '<div class="empty-state">⏳ Loading patients...</div>';
 
             try {
-                const response = await fetch(`${BASE_URL}?businessId=${id}`, {
-                    method: 'DELETE',
+                const response = await fetch(`${BASE_URL}/manage-patient`, {
+                    headers: { 'x-admin-key': ADMIN_KEY }
+                });
+                const patients = await response.json();
+
+                if (!Array.isArray(patients) || patients.length === 0) {
+                    container.innerHTML = '<div class="empty-state">📭 No patients yet. Add one above!</div>';
+                    return;
+                }
+
+                let html = `<table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Medication</th>
+                            <th>Language</th>
+                            <th>Last Follow-up</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+                patients.forEach(p => {
+                    const lastFollowUp = p.lastFollowUp ? new Date(p.lastFollowUp).toLocaleDateString() : 'Never';
+                    const language = p.language ? (p.language === 'en' ? '🇬🇧 English' : '🇹🇿 Kiswahili') : '⏳ Not set';
+                    const status = p.active ?
+                        '<span class="badge badge-success">Active</span>' :
+                        '<span class="badge badge-danger">Inactive</span>';
+                    const hasPending = p.followUps && p.followUps.length > 0 && p.followUps[p.followUps.length - 1].response ===
+                        'PENDING';
+                    const pendingBadge = hasPending ? '<span class="badge badge-warning">⏳ Pending</span>' : '';
+
+                    html += `
+                            <tr>
+                                <td>${p.name}</td>
+                                <td>${p.phone}</td>
+                                <td>${p.medication}</td>
+                                <td>${language}</td>
+                                <td>${lastFollowUp} ${pendingBadge}</td>
+                                <td>${status}</td>
+                            </tr>
+                        `;
+                });
+
+                html += `</tbody></table>`;
+                html +=
+                    `<p style="color:#A0A0B0; font-size:0.85rem; margin-top:12px;">📊 Total: ${patients.length} patients</p>`;
+                container.innerHTML = html;
+
+            } catch (error) {
+                container.innerHTML = `<div class="empty-state" style="color:#FF6B6B;">❌ Error loading patients: ${error.message}</div>`;
+            }
+        }
+
+        async function sendFollowups() {
+            const btn = document.querySelector('button[onclick="sendFollowups()"]');
+            const resultDiv = document.getElementById('sendResult');
+            btn.disabled = true;
+            btn.textContent = '⏳ Sending...';
+            resultDiv.style.display = 'block';
+            resultDiv.textContent = '⏳ Sending follow-ups...';
+
+            try {
+                const response = await fetch(`${BASE_URL}/send-followups`, {
+                    method: 'POST',
                     headers: { 'x-admin-key': ADMIN_KEY }
                 });
                 const result = await response.json();
-                showResult(result);
+
+                if (result.success) {
+                    resultDiv.innerHTML = `✅ Sent: ${result.sent} | Total due: ${result.total}\n${result.message || ''}`;
+                    resultDiv.style.color = '#25D366';
+                } else {
+                    resultDiv.innerHTML = `❌ Error: ${result.error || 'Unknown error'}`;
+                    resultDiv.style.color = '#FF6B6B';
+                }
+                loadPatients();
             } catch (error) {
-                showError(error);
+                resultDiv.innerHTML = `❌ Error: ${error.message}`;
+                resultDiv.style.color = '#FF6B6B';
             }
+
+            btn.disabled = false;
+            btn.textContent = '📨 Send to All Due Patients';
         }
 
         // ============================================================
-        // 5. SEND DAILY STATUS NOW
+        // HELPER FUNCTIONS
         // ============================================================
-        async function sendStatus() {
-            const id = document.getElementById('statusBusinessId').value.trim();
-            if (!id) {
-                showResult({ error: 'Please enter a Business ID' });
-                return;
-            }
 
-            try {
-                const response = await fetch(STATUS_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ businessId: id })
-                });
-                const result = await response.json();
-                showResult(result);
-            } catch (error) {
-                showError(error);
-            }
+        function showResult(elementId, message, type) {
+            const el = document.getElementById(elementId);
+            el.style.display = 'block';
+            el.style.color = type === 'error' ? '#FF6B6B' : '#25D366';
+            el.textContent = message;
         }
 
         // ============================================================
-        // ENTER KEY SUPPORT
+        // LOAD DATA ON PAGE LOAD
         // ============================================================
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const target = e.target;
-                if (target.id === 'viewBusinessId') viewBusiness();
-                else if (target.id === 'deleteBusinessId') deleteBusiness();
-                else if (target.id === 'statusBusinessId') sendStatus();
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPatients();
         });
     </script>
+
 </body>
 </html>
