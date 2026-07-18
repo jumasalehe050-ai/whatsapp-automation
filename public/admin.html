@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Africa-WA Admin</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            max-width: 800px; 
+            margin: 30px auto; 
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 { color: #075e54; border-bottom: 2px solid #25D366; padding-bottom: 10px; }
+        h2 { color: #075e54; margin-top: 30px; font-size: 1.2rem; }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        input, textarea, select {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        button {
+            padding: 12px 24px;
+            margin: 8px 4px 8px 0;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .btn-primary { background: #25D366; color: white; }
+        .btn-primary:hover { background: #1da851; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-danger:hover { background: #c0392b; }
+        .btn-info { background: #3498db; color: white; }
+        .btn-info:hover { background: #2980b9; }
+        .result {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow: auto;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-active { background: #25D366; color: white; }
+        .badge-paused { background: #f39c12; color: white; }
+        .badge-suspended { background: #e74c3c; color: white; }
+        .help-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+        .row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .row input { flex: 1; min-width: 150px; }
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <h1>🌍 Africa-WA Admin Dashboard</h1>
+    
+    <!-- ============================================================ -->
+    <!-- ADD BUSINESS -->
+    <!-- ============================================================ -->
+    <div class="card">
+        <h2>➕ Add / Update Business</h2>
+        <div class="row">
+            <input type="text" id="businessId" placeholder="Business ID (e.g., dress-shop)">
+            <input type="text" id="businessName" placeholder="Business Name">
+        </div>
+        <div class="row">
+            <input type="text" id="phoneNumberId" placeholder="Phone Number ID">
+            <input type="text" id="accessToken" placeholder="Access Token">
+        </div>
+        <div class="row">
+            <input type="text" id="businessType" placeholder="Type: dresses, pharmacy, restaurant">
+            <input type="text" id="statusTime" placeholder="Status Time (e.g., 08:00)" value="08:00">
+        </div>
+        <div style="margin: 10px 0;">
+            <label>
+                <input type="checkbox" id="statusEnabled" checked>
+                Enable Daily Status Updates
+            </label>
+        </div>
+        <button class="btn-primary" onclick="addBusiness()">➕ Add / Update Business</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- VIEW BUSINESS -->
+    <!-- ============================================================ -->
+    <div class="card">
+        <h2>🔍 View Business</h2>
+        <div class="row">
+            <input type="text" id="viewBusinessId" placeholder="Business ID">
+            <button class="btn-info" onclick="viewBusiness()">View</button>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- UPDATE BUSINESS -->
+    <!-- ============================================================ -->
+    <div class="card">
+        <h2>✏️ Update Business</h2>
+        <div class="row">
+            <input type="text" id="updateBusinessId" placeholder="Business ID">
+            <input type="text" id="updateField" placeholder="Field to update (e.g., businessName)">
+        </div>
+        <input type="text" id="updateValue" placeholder="New value">
+        <button class="btn-info" onclick="updateBusiness()">✏️ Update</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- DELETE BUSINESS -->
+    <!-- ============================================================ -->
+    <div class="card" style="border: 2px solid #e74c3c;">
+        <h2 style="color: #e74c3c;">🗑️ Delete Business</h2>
+        <div class="row">
+            <input type="text" id="deleteBusinessId" placeholder="Business ID">
+            <button class="btn-danger" onclick="deleteBusiness()">🗑️ Delete</button>
+        </div>
+        <div class="help-text">⚠️ This action cannot be undone!</div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TRIGGER STATUS UPDATE -->
+    <!-- ============================================================ -->
+    <div class="card">
+        <h2>📱 Send Daily Status Now</h2>
+        <div class="row">
+            <input type="text" id="statusBusinessId" placeholder="Business ID">
+            <button class="btn-primary" onclick="sendStatus()">📤 Send Status Now</button>
+        </div>
+        <div class="help-text">This will send today's WhatsApp Status update immediately</div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- RESULT OUTPUT -->
+    <!-- ============================================================ -->
+    <div class="card">
+        <h2>📋 Result</h2>
+        <div id="result" class="result">Ready. Use the buttons above to manage your clients.</div>
+    </div>
+
+    <script>
+        // ============================================================
+        // CONFIGURATION
+        // ============================================================
+        const ADMIN_KEY = 'MySecretKey2024!';
+        const BASE_URL = 'https://africa-wa.netlify.app/.netlify/functions/admin-business';
+        const STATUS_URL = 'https://africa-wa.netlify.app/.netlify/functions/daily-status';
+
+        // ============================================================
+        // HELPER FUNCTIONS
+        // ============================================================
+        function showResult(data) {
+            document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+        }
+
+        function showError(error) {
+            document.getElementById('result').textContent = '❌ Error: ' + error.message;
+        }
+
+        // ============================================================
+        // 1. ADD / UPDATE BUSINESS
+        // ============================================================
+        async function addBusiness() {
+            const data = {
+                businessId: document.getElementById('businessId').value.trim(),
+                businessName: document.getElementById('businessName').value.trim(),
+                phoneNumberId: document.getElementById('phoneNumberId').value.trim(),
+                accessToken: document.getElementById('accessToken').value.trim(),
+                businessType: document.getElementById('businessType').value.trim() || 'general',
+                statusSchedule: {
+                    enabled: document.getElementById('statusEnabled').checked,
+                    time: document.getElementById('statusTime').value.trim() || '08:00',
+                    template: 'daily_promo'
+                }
+            };
+
+            if (!data.businessId || !data.phoneNumberId || !data.accessToken) {
+                showResult({ error: 'Business ID, Phone Number ID, and Access Token are required' });
+                return;
+            }
+
+            try {
+                const response = await fetch(BASE_URL, {
+                    method: 'POST',
+                    headers: {
+                        'x-admin-key': ADMIN_KEY,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                showResult(result);
+            } catch (error) {
+                showError(error);
+            }
+        }
+
+        // ============================================================
+        // 2. VIEW BUSINESS
+        // ============================================================
+        async function viewBusiness() {
+            const id = document.getElementById('viewBusinessId').value.trim();
+            if (!id) {
+                showResult({ error: 'Please enter a Business ID' });
+                return;
+            }
+
+            try {
+                const response = await fetch(`${BASE_URL}?businessId=${id}`, {
+                    headers: { 'x-admin-key': ADMIN_KEY }
+                });
+                const result = await response.json();
+                showResult(result);
+            } catch (error) {
+                showError(error);
+            }
+        }
+
+        // ============================================================
+        // 3. UPDATE BUSINESS
+        // ============================================================
+        async function updateBusiness() {
+            const id = document.getElementById('updateBusinessId').value.trim();
+            const field = document.getElementById('updateField').value.trim();
+            const value = document.getElementById('updateValue').value.trim();
+
+            if (!id || !field) {
+                showResult({ error: 'Business ID and Field are required' });
+                return;
+            }
+
+            const data = {
+                businessId: id,
+                updates: {
+                    [field]: value
+                }
+            };
+
+            try {
+                const response = await fetch(BASE_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'x-admin-key': ADMIN_KEY,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                showResult(result);
+            } catch (error) {
+                showError(error);
+            }
+        }
+
+        // ============================================================
+        // 4. DELETE BUSINESS
+        // ============================================================
+        async function deleteBusiness() {
+            const id = document.getElementById('deleteBusinessId').value.trim();
+            if (!id) {
+                showResult({ error: 'Please enter a Business ID' });
+                return;
+            }
+
+            if (!confirm(`⚠️ Are you sure you want to delete "${id}"? This cannot be undone!`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${BASE_URL}?businessId=${id}`, {
+                    method: 'DELETE',
+                    headers: { 'x-admin-key': ADMIN_KEY }
+                });
+                const result = await response.json();
+                showResult(result);
+            } catch (error) {
+                showError(error);
+            }
+        }
+
+        // ============================================================
+        // 5. SEND DAILY STATUS NOW
+        // ============================================================
+        async function sendStatus() {
+            const id = document.getElementById('statusBusinessId').value.trim();
+            if (!id) {
+                showResult({ error: 'Please enter a Business ID' });
+                return;
+            }
+
+            try {
+                const response = await fetch(STATUS_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ businessId: id })
+                });
+                const result = await response.json();
+                showResult(result);
+            } catch (error) {
+                showError(error);
+            }
+        }
+
+        // ============================================================
+        // ENTER KEY SUPPORT
+        // ============================================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const target = e.target;
+                if (target.id === 'viewBusinessId') viewBusiness();
+                else if (target.id === 'deleteBusinessId') deleteBusiness();
+                else if (target.id === 'statusBusinessId') sendStatus();
+            }
+        });
+    </script>
+</body>
+</html>
