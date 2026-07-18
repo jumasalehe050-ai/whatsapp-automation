@@ -1,9 +1,16 @@
 [build]
   functions = "netlify/functions"
   command = "npm install --production --no-audit --no-fund"
+  publish = "public"
 
 [functions]
   node_bundler = "esbuild"
 
 [build.environment]
   NODE_VERSION = "18"
+
+# Serve static files from the public folder
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
