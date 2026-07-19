@@ -4,11 +4,50 @@
 
 const { getStore } = require("@netlify/blobs");
 
-// Create a store instance with proper configuration
+// ============================================================
+// CREATE STORE WITH MANUAL CONFIGURATION
+// ============================================================
 function store() {
-  // In Netlify Functions, getStore() automatically uses the site's configuration
-  // No need to manually pass siteID or token
-  return getStore("businesses");
+  // Use custom environment variable names (not reserved)
+  const siteID = process.env.BLOB_SITE_ID;
+  const token = process.env.BLOB_TOKEN;
+  
+  console.log("🔍 Blobs config:", { 
+    hasSiteID: !!siteID, 
+    hasToken: !!token 
+  });
+  
+  // If we have both siteID and token, use them explicitly
+  if (siteID && token) {
+    console.log("✅ Using manual Blobs configuration");
+    return getStore("businesses", {
+      siteID: siteID,
+      token: token
+    });
+  }
+  
+  // If only siteID exists (without token), try that
+  if (siteID) {
+    console.log("⚠️ Using siteID only for Blobs");
+    try {
+      return getStore("businesses", {
+        siteID: siteID
+      });
+    } catch (error) {
+      console.error("❌ Blobs failed with siteID only:", error.message);
+    }
+  }
+  
+  // Fallback: try default (works in some Netlify environments)
+  try {
+    console.log("🔄 Trying default Blobs configuration");
+    return getStore("businesses");
+  } catch (error) {
+    console.error("❌ All Blobs configurations failed:", error.message);
+    throw new Error(
+      "Netlify Blobs not configured. Please set BLOB_SITE_ID and BLOB_TOKEN environment variables."
+    );
+  }
 }
 
 // ============================================================
